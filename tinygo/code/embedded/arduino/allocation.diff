@@ -1,0 +1,24 @@
+diff --git a/tinygo/code/embedded/arduino/main.go b/tinygo/code/embedded/arduino/main.go
+index f6e12f2..fe8fbf5 100644
+--- a/tinygo/code/embedded/arduino/main.go
++++ b/tinygo/code/embedded/arduino/main.go
+@@ -5,6 +5,8 @@ import (
+ 	"time"
+ )
+ 
++var global *int
++
+ // https://tinygo.org/docs/reference/microcontrollers/arduino/
+ // tinygo flash -target=arduino code/embedded/arduino/main.go
+ func main() {
+@@ -21,6 +23,10 @@ func main() {
+ 			led.Low()
+ 		}
+ 
++		// tinygo build -o build-gc -target=arduino -gc=none code/embedded/arduino/main.go
++		i := 0
++		global = &i
++
+ 		time.Sleep(time.Millisecond * 500)
+ 	}
+ 
