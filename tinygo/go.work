@@ -1,0 +1,8 @@
+go 1.22.1
+
+use (
+	./code/embedded/arduino
+	./code/embedded/c
+	./code/embedded/stdlib
+	./code/wasm
+)

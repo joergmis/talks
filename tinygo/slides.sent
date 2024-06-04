@@ -1,0 +1,133 @@
+tinygo
+go on embedded systems and webassembly
+
+agenda
+- what (and why) is tinygo?
+- use cases
+- details and differences to go
+- arduino example
+- wasm/wasi
+- wasm example
+- summary
+
+what is tinygo?
+- new compiler which (still) uses mostly the go 
+  standard library and LLVM to optimize code
+- a new runtime library for some compiler intrinsics
+  like memory allocator or scheduler
+
+@images/compiler.png
+# source: https://www.youtube.com/watch?v=M4xDNm8q6xg
+
+why...
+
+... a new compiler?
+- gc does not support instruction sets for microchips
+- gccgo has a big runtime and is optimized for speed,
+  not memory footprin?t
+
+... not c or c++?
+- as mentioned in the ecc talk - 70% of security issues
+  are related to bad memory handling
+- undefined behaviour and only somewhat portable
+
+... not rust?
+- go is easier to get started, has good concurrency
+  support and a batteries included standard library
+- but - it has a garbage collector
+
+the goal of tinygo is to provide a write go for
+embedded systems while still being (mostly) compatible
+with the standard library.
+
+use cases of tinygo
+- embedded devices
+- wasm/wasi
+
+supported targets
+- arm (mainly cortex-m)
+- avr (avr backend in llvm still experimental, you
+  may encounter bugs)
+- risc-v
+- xtensa
+
+handpicked targets
+- nintendo switch
+- gameboy advance
+- esp32
+- pinetime
+- various stm nucleo
+- various arduinos
+- raspberry pi pico
+
+go compatibility as of may 24
+- garbage collection works (differently) and is much
+  slower
+- out of 148 packages, 127 compile and out of those 
+  packages, 68 pass all tests (aka work as intended)
+
+tooling
+- standard go tooling like testing package, formatting,
+  linters, ...
+- "tinygo gdb"
+
+garbage collection in tinygo
+go heavily relies on heap allocations - tinygo tries
+to optimize them away but this is not always possible.
+
+tinygo has different memory managers:
+- "-gc=none" doesn't use a memory manager at all and
+  causes a link error when memory is allocated
+- "-gc=leaking" only allocates memory, nevery frees it
+- "-gc=conservative" works on all platforms but the
+  performance is highly unpredictable
+
+note that with careful design (without/with limited
+heap allocation and use of interrupts) you can still 
+have real-time-ish behaviour since only memory 
+allocations trigger garbage collection cycles
+
+demo time!
+
+wasm
+- compile target
+- compact binary instruction format
+- JIT compilation -> near-native speed
+- sandboxed runtime environment
+
+@images/wasm.png
+# source: https://www.docker.com/blog/wasm-vs-docker/
+
+demo time!
+
+wasi
+provides a portable, modular, runtime-independent
+api for:
+- command line args
+- env variables
+- clock time
+- random numbers
+- filesystem access
+- use (but not create) sockets
+
+note: the api preserves the sandboxed nature through
+explicit capabilities
+
+@images/wasi.avif
+# source: https://wasmlabs.dev/articles/docker-without-containers/
+
+resources, tools and talks
+- GopherCon Europe 2023: Ron Evans: A Small Update on Tiny Go - https://www.youtube.com/watch?v=-EoVEIOvPek
+- an 8-bit microcontroller but it has a garbage collector - https://www.youtube.com/watch?v=75VGzwtmgXc
+- WASI support in Go - https://tip.golang.org/blog/wasi
+- Performance Evaluation of C/C++, MicroPython, Rust and TinyGo Programming Languages on ESP32 Microcontroller - https://www.mdpi.com/2079-9292/12/1/143
+- Programming microcontrollers in Go using TinyGo - https://www.youtube.com/watch?v=kImEd6Lrf3U
+- tinygo.nvim - https://github.com/pcolladosoto/tinygo.nvim
+- Nuts-and-bolts of programming microcontrollers with Golang - https://www.youtube.com/watch?v=udWt6BZFcmo
+- Embedded Systems 101: SX1278 LoRa, Datasheets & SPI connection with TinyGo - https://www.youtube.com/watch?v=_5XgtYkq2eo
+- wazero: the zero dependency web assembly runtime for go developers - https://wazero.io/
+- capsule: wasm runners on top of wazero - https://github.com/bots-garden/capsule
+- wzprof: pprof based profiler built on top of wazero - https://github.com/dispatchrun/wzprof
+- TinyGo: Getting the upper hen - https://www.youtube.com/watch?v=M4xDNm8q6xg
+- TinyGo Preview - how does it work? - https://aykevl.nl/2022/05/tinygo-preview
+- TinyGo Playground - https://play.tinygo.org
