@@ -8,7 +8,7 @@ agenda
 - arduino example
 - wasm/wasi
 - wasm example
-- summary
+- conclusion
 
 what is tinygo?
 - new compiler which (still) uses mostly the go 
@@ -24,7 +24,7 @@ why...
 ... a new compiler?
 - gc does not support instruction sets for microchips
 - gccgo has a big runtime and is optimized for speed,
-  not memory footprin?t
+  not memory footprint
 
 ... not c or c++?
 - as mentioned in the ecc talk - 70% of security issues
@@ -60,11 +60,14 @@ handpicked targets
 - various arduinos
 - raspberry pi pico
 
-go compatibility as of may 24
-- garbage collection works (differently) and is much
-  slower
+go compatibility and differences
+- garbage collection works (differently) and is slower
+- binary is compiled in a single step without
+  intermediate linking -> slower
 - out of 148 packages, 127 compile and out of those 
-  packages, 68 pass all tests (aka work as intended)
+  packages, 68 pass all tests (= work as intended)
+- go also supports building wasm but the binaries
+  are still bigger
 
 tooling
 - standard go tooling like testing package, formatting,
@@ -98,6 +101,12 @@ wasm
 @images/wasm.png
 # source: https://www.docker.com/blog/wasm-vs-docker/
 
+use case?
+build a simulator
+
+@images/simulator.gif
+# source: https://aykevl.nl/2022/05/tinygo-preview
+
 demo time!
 
 wasi
@@ -116,6 +125,12 @@ explicit capabilities
 @images/wasi.avif
 # source: https://wasmlabs.dev/articles/docker-without-containers/
 
+conclusion
+- nice to have
+- works mostly with stdlib
+- if hardware is not supported (yet), you'll
+  to write your own code
+
 resources, tools and talks
 - GopherCon Europe 2023: Ron Evans: A Small Update on Tiny Go - https://www.youtube.com/watch?v=-EoVEIOvPek
 - an 8-bit microcontroller but it has a garbage collector - https://www.youtube.com/watch?v=75VGzwtmgXc
@@ -131,3 +146,4 @@ resources, tools and talks
 - TinyGo: Getting the upper hen - https://www.youtube.com/watch?v=M4xDNm8q6xg
 - TinyGo Preview - how does it work? - https://aykevl.nl/2022/05/tinygo-preview
 - TinyGo Playground - https://play.tinygo.org
+- Adding a new board to tinygo - https://github.com/tinygo-org/tinygo/wiki/Adding-a-new-board

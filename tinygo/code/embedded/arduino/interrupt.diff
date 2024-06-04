@@ -1,0 +1,37 @@
+diff --git a/tinygo/code/embedded/arduino/main.go b/tinygo/code/embedded/arduino/main.go
+index f6e12f2..6ebd4f6 100644
+--- a/tinygo/code/embedded/arduino/main.go
++++ b/tinygo/code/embedded/arduino/main.go
+@@ -2,26 +2,21 @@ package main
+ 
+ import (
+ 	"machine"
+-	"time"
+ )
+ 
+ // https://tinygo.org/docs/reference/microcontrollers/arduino/
+ // tinygo flash -target=arduino code/embedded/arduino/main.go
+ func main() {
+-	pin := machine.D4
+-	pin.Configure(machine.PinConfig{Mode: machine.PinInput})
+-
+ 	led := machine.LED
+ 	led.Configure(machine.PinConfig{Mode: machine.PinOutput})
+ 
+-	for {
+-		if pin.Get() {
+-			led.High()
+-		} else {
+-			led.Low()
+-		}
++	pin := machine.D4
++	pin.Configure(machine.PinConfig{Mode: machine.PinInputPulldown})
++	pin.SetInterrupt(machine.PinToggle, func(p machine.Pin) {
++		led.Set(p.Get())
++	})
+ 
+-		time.Sleep(time.Millisecond * 500)
++	for {
+ 	}
+ 
+ }
