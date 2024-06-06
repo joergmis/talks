@@ -31,6 +31,14 @@ why...
   are related to bad memory handling
 - undefined behaviour and only somewhat portable
 
+The results of this study reveal that though the C plus programming language
+is widely believed to be the most efficient for embedded programming this is
+not always the case in the few cases the CC plus algorithms were outperformed
+by algorithms implemented in tinygo and rust moreover the tiny go algorithms
+demonstrated jitter-free execution making this language more preferable for
+hard real-time applications
+-- https://www.mdpi.com/2079-9292/12/1/143
+
 ... not rust?
 - go is easier to get started, has good concurrency
   support and a batteries included standard library
@@ -59,6 +67,9 @@ handpicked targets
 - various stm nucleo
 - various arduinos
 - raspberry pi pico
+
+@images/package-setup.png
+# source: https://tinygo.org/docs/concepts/package-organization
 
 go compatibility and differences
 - garbage collection works (differently) and is slower
@@ -128,6 +139,7 @@ explicit capabilities
 conclusion
 - nice to have
 - works mostly with stdlib
+- usage seems to be mostly on the cloud side
 - if hardware is not supported (yet), you'll
   to write your own code
 
